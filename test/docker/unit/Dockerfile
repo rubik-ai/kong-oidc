@@ -6,6 +6,7 @@ ENV LUA_PATH /usr/local/share/lua/5.1/?.lua;/usr/local/kong-oidc/?.lua
 ENV LUA_CPATH /usr/local/lib/lua/5.1/?.so
 
 # Install unzip for luarocks, gcc for lua-cjson
+USER root
 RUN yum install -y unzip gcc 
 RUN luarocks install luacov
 RUN luarocks install luaunit

@@ -72,7 +72,7 @@ describe("oidc plugin", function()
         method = "GET",
         path   = "/mock/?state=123456&code=123456",
       })
-      -- This will fail in openidc.lua because session created in first phase is loat
+      -- This will fail in oidclib.lua because session created in first phase is loat
       -- and several things could mismatch (state, nonce, original_url, ...)
       local body = assert.res_status(500, res)
     end)

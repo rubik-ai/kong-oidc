@@ -58,12 +58,31 @@ function M.get_options(config, ngx)
     filters = parseFilters(config.filters),
     logout_path = config.logout_path,
     redirect_after_logout_uri = config.redirect_after_logout_uri,
+    verify_only = config.verify_only,
   }
 end
 
 function M.exit(httpStatusCode, message, ngxCode)
   ngx.status = httpStatusCode
-  ngx.say(message)
+  ngx.header.content_type = "application/json; charset=utf-8"  
+  if httpStatusCode == ngx.HTTP_UNAUTHORIZED then
+    ngx.say(cjson.encode({ allow = false, error = {
+      message = message,
+      status = httpStatusCode
+    }}))
+  elseif httpStatusCode == 500 then
+    ngx.say(cjson.encode({ allow = false, error = {
+      message = message,
+      status = httpStatusCode
+    }}))
+  elseif httpStatusCode == ngx.HTTP_BAD_REQUEST then
+    ngx.say(cjson.encode({ allow = false, error = {
+      message = message,
+      status = httpStatusCode
+    }}))
+  else
+    ngx.say(message)
+  end
   ngx.exit(ngxCode)
 end
 
